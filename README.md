@@ -1,0 +1,1 @@
+# MITRE-aligned-Advanced-Hunting-KQL-library-Windows-
