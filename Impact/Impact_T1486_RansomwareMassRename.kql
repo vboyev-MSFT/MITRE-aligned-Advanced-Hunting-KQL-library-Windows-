@@ -1,0 +1,7 @@
+// Tactic: Impact | Technique: T1486 Data Encrypted for Impact (mass rename)
+let badExt = dynamic([".locked",".crypted",".encrypt",".enc",".lock",".rnsm",".deadbolt",".RYK",".REvil"]);
+DeviceFileEvents
+| where Timestamp > ago(lookback) and ActionType in ("FileRenamed","FileModified")
+| where FileName has_any (badExt)
+| summarize Renames=count() by DeviceId, DeviceName, bin(Timestamp, 5m)
+| where Renames > 200

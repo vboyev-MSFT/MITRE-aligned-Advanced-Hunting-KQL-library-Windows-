@@ -1,0 +1,17 @@
+// Tactic: Exfiltration | Technique: T1041 Exfiltration over C2 channel (bursty short-lived conns)
+let commonRemotes =
+  DeviceNetworkEvents
+  | where Timestamp > ago(lookback) and ActionType == "ConnectionSuccess" and isnotempty(RemoteUrl)
+  | summarize dcount(DeviceId) by RemoteUrl
+  | where dcount_DeviceId >= 10
+  | project RemoteUrl;
+DeviceNetworkEvents
+| where Timestamp > ago(lookback) and ActionType == "ConnectionSuccess"
+| where isnotempty(RemoteUrl)
+| lookup kind=anti joinkey=RemoteUrl commonRemotes on RemoteUrl
+| where tostring(InitiatingProcessFileName) !in~ (browserNames)
+| summarize ConnCount=count(), FirstSeen=min(Timestamp), LastSeen=max(Timestamp),
+            DistLocalPorts=dcount(LocalPort), DistRemotePorts=dcount(RemotePort)
+          by DeviceId, DeviceName, InitiatingProcessFileName, RemoteUrl, RemoteIP, Protocol, bin(Timestamp, focusWindow)
+| where ConnCount >= minConnForBurst
+| order by ConnCount desc

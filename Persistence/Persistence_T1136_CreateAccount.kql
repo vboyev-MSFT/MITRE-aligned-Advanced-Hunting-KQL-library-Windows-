@@ -1,0 +1,5 @@
+// Tactic: Persistence | Technique: T1136 Create Account (Directory)
+// Data source: IdentityDirectoryEvents (if enabled in your tenant)
+IdentityDirectoryEvents
+| where Timestamp > ago(lookback) and ActionType in ("UserCreated","GroupMemberAdded")
+| project Timestamp, ActionType, TargetAccountDisplayName, TargetAccountUpn, ActorAccountUpn, AdditionalFields

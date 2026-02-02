@@ -1,0 +1,6 @@
+// Tactic: Persistence | Technique: T1543.003 Create/Modify System Process (Windows Service)
+DeviceProcessEvents
+| where Timestamp > ago(lookback)
+| where (FileName =~ "sc.exe" and ProcessCommandLine has_any ("create ","config "))
+   or (FileName in~ ("powershell.exe","pwsh.exe") and ProcessCommandLine has "New-Service")
+| project Timestamp, DeviceName, FileName, ProcessCommandLine

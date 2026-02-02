@@ -1,0 +1,7 @@
+// Tactic: Collection | Technique: T1119 Automated Collection (bulk docs)
+let exts = dynamic([".doc",".docx",".xls",".xlsx",".ppt",".pptx",".pdf",".pst"]);
+DeviceFileEvents
+| where Timestamp > ago(lookback) and ActionType in ("FileCopied","FileCompressed","FileRenamed")
+| where FileName has_any (exts)
+| summarize Files=count() by DeviceId, DeviceName, bin(Timestamp, 10m)
+| where Files > 50

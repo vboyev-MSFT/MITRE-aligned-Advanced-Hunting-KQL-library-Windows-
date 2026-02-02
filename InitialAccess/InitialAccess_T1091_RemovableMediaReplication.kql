@@ -1,0 +1,10 @@
+// Tactic: Initial Access | Technique: T1091 Replication Through Removable Media
+// Pattern: USB mount events followed by file writes
+let usbWindow = 10m;
+let usbMounts = DeviceEvents
+  | where Timestamp > ago(lookback) and ActionType in ("UsbDriveMount","UsbDriveDriveLetterChanged","UsbDriveUnmount");
+DeviceFileEvents
+| where Timestamp > ago(lookback) and ActionType in ("FileCreated","FileRenamed","FileModified")
+| join kind=inner usbMounts on DeviceId
+| where DeviceFileEvents.Timestamp between (usbMounts.Timestamp .. usbMounts.Timestamp + usbWindow)
+| project Timestamp=DeviceFileEvents.Timestamp, DeviceName, FileName, FolderPath, ActionType, usbEvent=usbMounts.ActionType

@@ -1,0 +1,13 @@
+// Tactic: Initial Access | Technique: T1204 User Execution
+// Pattern: File created/downloaded then executed within a short window
+let window = 2m;
+DeviceFileEvents
+| where Timestamp > ago(lookback) and ActionType in ("FileCreated","FileDownloaded")
+| project DeviceId, FileName, FolderPath, SHA1, FTime=Timestamp
+| join kind=inner (
+    DeviceProcessEvents
+    | where Timestamp > ago(lookback)
+    | project DeviceId, FileName, ProcessCommandLine, PTime=Timestamp
+) on DeviceId, FileName
+| where PTime between (FTime .. FTime + window)
+| project PTime, DeviceId, FileName, ProcessCommandLine, FolderPath

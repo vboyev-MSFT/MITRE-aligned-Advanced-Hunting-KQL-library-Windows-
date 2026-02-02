@@ -1,0 +1,5 @@
+// Tactic: Discovery | Techniques: T1087/T1016/T1057 Account/Network/Process Discovery
+let recon = dynamic(["net.exe","nltest.exe","whoami.exe","ipconfig.exe","arp.exe","route.exe","tasklist.exe","qwinsta.exe","query.exe"]);
+DeviceProcessEvents
+| where Timestamp > ago(lookback) and FileName in~ (recon)
+| project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName

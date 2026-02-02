@@ -1,0 +1,9 @@
+// Tactic: Initial Access | Technique: T1566 Phishing (Email)
+// Data source: EmailEvents (no AlertInfo/AlertEvidence used)
+// Requires: Defender for Office 365 tables
+// Tip: include Globals.kql or add: let lookback = 14d;
+EmailEvents
+| where Timestamp > ago(lookback) and EmailDirection == "Inbound"
+| where DeliveryAction == "Delivered"
+| where AuthenticationDetails has "fail" or DetectionMethods has_any ("spoof","spf","dmarc","dkim")
+| project Timestamp, RecipientEmailAddress, SenderFromAddress, Subject, ThreatTypes, DetectionMethods, AuthenticationDetails

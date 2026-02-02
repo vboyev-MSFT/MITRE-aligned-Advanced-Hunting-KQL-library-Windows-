@@ -1,0 +1,18 @@
+// Tactic: Lateral Movement | Technique: T1021 Remote Services (RDP/WinRM/SMB)
+let rdpPorts = dynamic([3389]);
+let winrmPorts = dynamic([5985,5986]);
+let nowindow = 1h;
+(
+  IdentityLogonEvents
+  | where Timestamp > ago(lookback)
+  | where LogonType in ("RemoteInteractive","RemoteInteractiveOrRdp") or Protocol in ("RDP","NTLM","Kerberos")
+  | summarize by Timestamp, AccountUpn, DeviceName, ActionType, LogonType, Protocol
+)
+| join kind=leftouter (
+  DeviceNetworkEvents
+  | where Timestamp > ago(lookback) and ActionType == "ConnectionSuccess"
+  | where RemotePort in (rdpPorts) or RemotePort in (winrmPorts) or RemotePort == 445
+  | project DNETTime=Timestamp, DeviceId, DeviceName, RemoteIP, RemotePort, InitiatingProcessFileName
+) on DeviceName
+| where DNETTime between (Timestamp - nowindow .. Timestamp + nowindow)
+| project Timestamp, DeviceName, AccountUpn, RemotePort, InitiatingProcessFileName

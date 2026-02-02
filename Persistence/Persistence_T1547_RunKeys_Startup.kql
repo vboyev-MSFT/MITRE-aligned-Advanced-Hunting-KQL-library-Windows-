@@ -1,0 +1,10 @@
+// Tactic: Persistence | Techniques: T1060/T1547 Boot or Logon Autostart (Run Keys/Startup)
+DeviceRegistryEvents
+| where Timestamp > ago(lookback)
+| where RegistryKey has_any (@"\Software\Microsoft\Windows\CurrentVersion\Run", @"\Software\Microsoft\Windows\CurrentVersion\RunOnce")
+| project Timestamp, DeviceName, RegistryKey, RegistryValueName, RegistryValueData, InitiatingProcessFileName, InitiatingProcessCommandLine
+union (
+DeviceFileEvents
+| where Timestamp > ago(lookback)
+| where FolderPath has @"\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+| project Timestamp, DeviceName, FileName, FolderPath, InitiatingProcessFileName)

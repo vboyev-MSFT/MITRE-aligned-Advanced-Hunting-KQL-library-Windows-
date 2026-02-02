@@ -1,0 +1,6 @@
+// Tactic: Defense Evasion | Technique: T1036 Masquerading (system names in user paths)
+DeviceProcessEvents
+| where Timestamp > ago(lookback)
+| where FileName in~ ("svchost.exe","lsass.exe","explorer.exe","services.exe")
+| where FolderPath has_any ("\Users\","\Desktop\","\Temp\","\AppData\")
+| project Timestamp, DeviceName, FileName, FolderPath, ProcessCommandLine

@@ -1,0 +1,6 @@
+// Tactic: Command and Control | Technique: T1095 Non-Application Layer Protocol (odd egress)
+DeviceNetworkEvents
+| where Timestamp > ago(lookback) and ActionType == "ConnectionSuccess"
+| where RemoteIPType == "Public" and RemotePort !in (allowRemotePorts)
+| summarize Hits=count(), DistinctPorts=dcount(RemotePort) by DeviceName, RemoteIP
+| where Hits > 100 or DistinctPorts > 10

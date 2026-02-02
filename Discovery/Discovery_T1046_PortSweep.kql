@@ -1,0 +1,6 @@
+// Tactic: Discovery | Technique: T1046 Network Service Scanning (port sweep)
+DeviceNetworkEvents
+| where Timestamp > ago(lookback) and ActionType == "ConnectionSuccess"
+| where RemotePort !in (allowRemotePorts) and RemoteIPType == "Public"
+| summarize DistinctPorts=dcount(RemotePort) by DeviceId, bin(Timestamp, 10m)
+| where DistinctPorts > 25

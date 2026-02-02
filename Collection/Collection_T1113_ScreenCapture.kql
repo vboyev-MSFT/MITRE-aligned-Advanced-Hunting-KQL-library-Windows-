@@ -1,0 +1,6 @@
+// Tactic: Collection | Technique: T1113 Screen Capture (tooling heuristics)
+DeviceProcessEvents
+| where Timestamp > ago(lookback)
+| where FileName has_any ("nircmd","screencap","ffmpeg.exe","mspaint.exe")
+   or ProcessCommandLine has_any ("PrintWindow","BitBlt","screenshot","/screen-capture")
+| project Timestamp, DeviceName, FileName, ProcessCommandLine

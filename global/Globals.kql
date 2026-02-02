@@ -1,0 +1,12 @@
+
+// MITRE-KQL-Library :: Global knobs & helper lists
+// These variables are referenced by many queries in this repo. Paste at the top of your
+// Advanced Hunting session or keep duplicates inside each query if you prefer standalone runs.
+
+let lookback = 14d;          // Hunting horizon (<= Advanced Hunting retention)
+let focusWindow = 1h;        // Burst window for network patterns
+let minConnForBurst = 60;    // Network burst threshold
+let browserNames = dynamic(["chrome.exe","msedge.exe","firefox.exe","iexplore.exe","safari.exe","brave.exe"]);
+let msCorp = dynamic(["*.microsoft.com","*.windowsupdate.com","*.office.com","*.msftauth.net","*.azure.com"]);
+let allowRemotePorts = dynamic([80,443,53,123]);   // Add egress norms
+let adminTools = dynamic(["psexec.exe","wmic.exe","winrm.cmd","plink.exe","ssh.exe","smbexec.py","wmiprvse.exe"]);
