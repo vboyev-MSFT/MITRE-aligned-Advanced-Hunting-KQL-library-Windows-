@@ -6,7 +6,6 @@ DeviceFileEvents
 | project DeviceId, FileName, FolderPath, SHA1, FTime=Timestamp
 | join kind=inner (
     DeviceProcessEvents
-    | where Timestamp > ago(lookback)
     | project DeviceId, FileName, ProcessCommandLine, PTime=Timestamp
 ) on DeviceId, FileName
 | where PTime between (FTime .. FTime + window)
