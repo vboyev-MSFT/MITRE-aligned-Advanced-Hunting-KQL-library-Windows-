@@ -1,5 +1,4 @@
 // Tactic: Privilege Escalation | Technique: T1574 Hijack Execution Flow (DLL search order)
 DeviceImageLoadEvents
-| where Timestamp > ago(lookback)
 | where FolderPath has_any ("\AppData\","\Temp\","\Users\Public\")
 | project Timestamp, DeviceName, FileName, FolderPath, InitiatingProcessFileName, InitiatingProcessCommandLine
