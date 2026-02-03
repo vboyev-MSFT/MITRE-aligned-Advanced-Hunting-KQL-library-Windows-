@@ -1,7 +1,6 @@
 // Tactic: Exfiltration | Technique: T1567 Exfiltration to Cloud Storage (SaaS)
 // Requires: Defender for Cloud Apps connectors (CloudAppEvents populated)
 CloudAppEvents
-| where Timestamp > ago(lookback)
 | where ActionType in ("FileUploaded","FileCopied","FolderCopied")
 | where Application in~ ("Microsoft SharePoint Online","Microsoft OneDrive for Business","Dropbox","Box","Google Drive")
 | where ObjectType =~ "File" and ObjectName has_any (".zip",".7z",".rar",".pst",".csv",".db",".bak",".sql",".doc",".xls",".pdf")
