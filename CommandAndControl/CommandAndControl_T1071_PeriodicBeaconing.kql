@@ -1,13 +1,22 @@
 // Tactic: Command and Control | Technique: T1071 Application Layer Protocol (periodic beacon)
-let minEvents=20;
+let minEvents = 20;
 DeviceNetworkEvents
-| where Timestamp > ago(lookback) and ActionType == "ConnectionSuccess" and isnotempty(RemoteUrl)
+| where Timestamp > ago(1d)
+| where ActionType == "ConnectionSuccess"
+| where isnotempty(RemoteUrl)
 | project DeviceId, DeviceName, RemoteUrl, RemoteIP, Timestamp
 | order by DeviceId asc, RemoteUrl asc, Timestamp asc
 | serialize
-| extend NextTs = next(Timestamp), DeltaSec = toreal(datetime_diff('second', NextTs, Timestamp)) * -1.0
-| where isnotnull(DeltaSec) and DeltaSec > 0
-| summarize Events=count(), MeanDelta=avg(DeltaSec), StdDelta=stdev(DeltaSec),
-            FirstSeen=min(Timestamp), LastSeen=max(Timestamp) by DeviceId, DeviceName, RemoteUrl, RemoteIP
-| where Events >= minEvents and StdDelta < 5.0
+| extend NextTs = next(Timestamp)
+| extend DeltaSec = datetime_diff("second", NextTs, Timestamp)
+| where isnotnull(DeltaSec)
+| summarize 
+      Events = count(),
+      MeanDelta = avg(DeltaSec),
+      StdDelta = stdev(DeltaSec),
+      FirstSeen = min(Timestamp),
+      LastSeen = max(Timestamp)
+      by DeviceId, DeviceName, RemoteUrl, RemoteIP
+| where Events > minEvents
+| where StdDelta < 5
 | project DeviceName, RemoteUrl, RemoteIP, Events, MeanDelta, StdDelta, FirstSeen, LastSeen
