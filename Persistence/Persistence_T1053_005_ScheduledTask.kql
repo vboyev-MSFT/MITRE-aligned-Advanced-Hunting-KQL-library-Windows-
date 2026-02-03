@@ -1,5 +1,4 @@
 // Tactic: Persistence | Technique: T1053.005 Scheduled Task/Job (Windows)
 DeviceProcessEvents
-| where Timestamp > ago(lookback)
 | where FileName =~ "schtasks.exe" and ProcessCommandLine has_any ("/Create"," /TN "," /TR ")
 | project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName
