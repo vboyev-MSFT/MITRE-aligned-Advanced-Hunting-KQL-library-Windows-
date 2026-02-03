@@ -26,7 +26,7 @@ MITRE-KQL-Library/
 ## Usage
 1. Open **Microsoft Defender XDR > Advanced hunting**.
 2. Option A: Paste **global/Globals.kql** at the top of your session and then run any query.
-   Option B: Add the minimal `let lookback = 14d;` etc. to an individual query for standalone use.
+   //Option B: Add the minimal `let lookback = 14d;` etc. to an individual query for standalone use. ( I removed _lookback_ from the queries - but the other parameters are valid for option A.)
 3. Tune allowlists/thresholds for your environment (e.g., `allowRemotePorts`, `browserNames`).
 4. Convert hunts you like into **Custom detections** with appropriate response actions.
 
