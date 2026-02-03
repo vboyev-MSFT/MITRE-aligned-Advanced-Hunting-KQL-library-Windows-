@@ -1,6 +1,5 @@
 // Tactic: Impact | Technique: T1490 Inhibit System Recovery (shadow copies & backups)
 DeviceProcessEvents
-| where Timestamp > ago(lookback)
 | where (FileName =~ "vssadmin.exe" and ProcessCommandLine has_any ("delete","shadows","/all","/quiet"))
    or (FileName =~ "wmic.exe" and ProcessCommandLine has_all ("shadowcopy","delete"))
    or (FileName =~ "bcdedit.exe" and ProcessCommandLine has_any ("/set {default} recoveryenabled No","/set {default} bootstatuspolicy ignoreallfailures"))
