@@ -1,6 +1,5 @@
 // Tactic: Lateral Movement | Technique: T1105 Ingress Tool Transfer
 DeviceProcessEvents
-| where Timestamp > ago(lookback)
 | where FileName in~ ("psexec.exe","wmic.exe","winrm.cmd","powershell.exe","pwsh.exe")
 | where ProcessCommandLine has_any ("copy \\","Copy-Item \\","Invoke-Command","Enter-PSSession","Start-Process -ComputerName")
 | project Timestamp, DeviceName, FileName, ProcessCommandLine
