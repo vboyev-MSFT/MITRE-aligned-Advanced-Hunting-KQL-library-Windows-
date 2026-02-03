@@ -1,5 +1,5 @@
 // Domain: Identity | Technique: T1110 Brute Force (burst of failures)
 IdentityLogonEvents
-| where Timestamp > ago(lookback) and ActionType == "LogonFailed"
+| where ActionType == "LogonFailed"
 | summarize Failures=count() by AccountUpn, DeviceName, bin(Timestamp, 5m)
 | where Failures >= 20
