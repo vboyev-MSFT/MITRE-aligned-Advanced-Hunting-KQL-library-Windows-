@@ -1,5 +1,4 @@
 // Tactic: Execution | Technique: T1047 Windows Management Instrumentation
 DeviceProcessEvents
-| where Timestamp > ago(lookback)
 | where FileName in~ ("wmic.exe") or ProcessCommandLine has_any ("Win32_Process","/node:","/user:")
 | project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine
