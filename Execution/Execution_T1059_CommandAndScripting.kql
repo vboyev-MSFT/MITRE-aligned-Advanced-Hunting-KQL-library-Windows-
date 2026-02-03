@@ -1,6 +1,5 @@
 // Tactic: Execution | Technique: T1059 Command and Scripting Interpreter
 DeviceProcessEvents
-| where Timestamp > ago(lookback)
 | where FileName in~ ("powershell.exe","pwsh.exe","cmd.exe","cscript.exe","wscript.exe","mshta.exe","rundll32.exe","regsvr32.exe")
 | where ProcessCommandLine has_any (" -enc"," -EncodedCommand","IEX","DownloadString","FromBase64String","/c ","http","https","javascript:","vbscript:")
 | project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName
