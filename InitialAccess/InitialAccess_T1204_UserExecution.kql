@@ -2,7 +2,7 @@
 // Pattern: File created/downloaded then executed within a short window
 let window = 2m;
 DeviceFileEvents
-| where Timestamp > ago(lookback) and ActionType in ("FileCreated","FileDownloaded")
+| where ActionType in ("FileCreated","FileDownloaded")
 | project DeviceId, FileName, FolderPath, SHA1, FTime=Timestamp
 | join kind=inner (
     DeviceProcessEvents
