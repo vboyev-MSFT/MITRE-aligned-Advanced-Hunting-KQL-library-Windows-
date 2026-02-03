@@ -1,6 +1,6 @@
 // Tactic: Defense Evasion | Technique: T1562 Impair Defenses (tamper with Defender)
 DeviceProcessEvents
-| where Timestamp > ago(lookback)
+//| where Timestamp > ago(lookback)
 | where (FileName in~ ("powershell.exe","pwsh.exe") and ProcessCommandLine has_any ("Set-MpPreference","DisableRealtimeMonitoring","DisableIOAVProtection"))
    or (FileName =~ "reg.exe" and ProcessCommandLine has @"\Policies\Microsoft\Windows Defender")
 | project Timestamp, DeviceName, FileName, ProcessCommandLine
