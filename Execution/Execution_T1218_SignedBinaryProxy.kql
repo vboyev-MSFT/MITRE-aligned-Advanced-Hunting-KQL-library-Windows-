@@ -1,6 +1,6 @@
 // Tactic: Execution | Technique: T1218 Signed Binary Proxy Execution (LOLBins)
 let lolbins = dynamic(["mshta.exe","regsvr32.exe","rundll32.exe","msbuild.exe","installutil.exe","desktopimgdownldr.exe"]);
 DeviceProcessEvents
-| where Timestamp > ago(lookback) and FileName in~ (lolbins)
+| where FileName in~ (lolbins)
 | where ProcessCommandLine has_any ("http","https","javascript:","vbscript:","/i:",".sct",".vbs",".js",".hta",".dll",".xsl")
 | project Timestamp, DeviceName, FileName, ProcessCommandLine
