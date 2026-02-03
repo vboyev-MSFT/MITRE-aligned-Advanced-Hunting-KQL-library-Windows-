@@ -1,5 +1,4 @@
 // Domain: Email & Collaboration | Technique: T1114 Email Collection (post-delivery actions)
 EmailPostDeliveryEvents
-| where Timestamp > ago(lookback)
 | where ActionType in ("Phish ZAP","Malware ZAP","Manual remediation")
 | project Timestamp, ActionType, RecipientEmailAddress, DeliveryLocation, ThreatTypes, ActionResult, NetworkMessageId
