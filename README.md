@@ -20,8 +20,10 @@ This repository is designed for security analysts, threat hunters, detection eng
 
 ## Quick Start
 
-1. Open the **Microsoft Defender portal**.
-2. Go to **Hunting** > **Advanced Hunting**.
+1  Always start with global.kql
+Open Advanced Hunting
+Paste global.kql
+2  Paste any query from the repo under it
 3. Choose a query from the relevant MITRE tactic folder.
 4. Paste the query into Advanced Hunting.
 5. Review and tune any environment-specific values.
