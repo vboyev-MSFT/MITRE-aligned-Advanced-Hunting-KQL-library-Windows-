@@ -20,16 +20,15 @@ This repository is designed for security analysts, threat hunters, detection eng
 
 ## Quick Start
 
-1  Always start with global.kql
-Open Advanced Hunting
-Paste global.kql
-2  Paste any query from the repo under it
-3. Choose a query from the relevant MITRE tactic folder.
-4. Paste the query into Advanced Hunting.
-5. Review and tune any environment-specific values.
-6. Run the query.
-7. Investigate returned results.
-8. If the logic produces high-confidence signal, consider converting it into a custom detection.
+1  Always start with global.kql 
+    Open Advanced Hunting
+    Paste global.kql
+2. Choose a query from the relevant MITRE tactic folder.
+3. Paste the query into Advanced Hunting.
+4. Review and tune any environment-specific values.
+5. Run the query.
+6. Investigate returned results.
+7. If the logic produces high-confidence signal, consider converting it into a custom detection.
 
 ---
 
